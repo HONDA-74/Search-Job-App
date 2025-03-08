@@ -30,6 +30,7 @@ export const deleteSchema = joi.object({
 
 export const getJobsSchema = joi.object({
     companyId : generalFields.id,
+    id : generalFields.id,
     search : joi.string(),
     limit : joi.number(),
     skip : joi.number(),

@@ -87,11 +87,21 @@ export const deleteJob = async (req, res, next) => {
 }
 
 export const getJobs = async (req, res, next) => {
-    const { search , companyId } = req.params
-    const {  skip = 0, limit = 10, sort = "createdAt" } = req.query
+    const { id , companyId } = req.params
+    const {search} = req.body
+    const {page = 1 , limit = 10, sort = "createdAt" } = req.query
+    const skip = (page - 1) * limit
 
     let query = { isDeleted: false }
-    if (companyId) query.companyId = companyId;
+    if (companyId) query.companyId = companyId
+    if (id) query._id = id
+    if (search) {
+        const company = await Company.findOne({companyName : { $regex: search, $options: "i" } })
+
+        if(!company) return next(new Error(messages.company.notFound , { cause : 404}))
+
+            query.companyId = company._id
+    }
 
     let jobs = await Job.find(query).populate({
         path: "companyId",
@@ -100,14 +110,10 @@ export const getJobs = async (req, res, next) => {
     .skip(parseInt(skip))
     .limit(parseInt(limit))
     .sort({ [sort]: -1 })
+    
+    jobs = jobs.filter(job => job.companyId)
 
     if(jobs.length == 0) return next(new Error(messages.job.notFound , {cause : 404}))
-
-    if (search) {
-        jobs = jobs.filter(job => 
-            job.companyId?.companyName.toLowerCase().includes(search.toLowerCase())
-        )
-        }
 
     const totalCount = await Job.countDocuments(query)
 

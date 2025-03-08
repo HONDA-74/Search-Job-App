@@ -52,7 +52,7 @@ router.get(
 )
 
 router.get(
-    "/:search?",
+    "/:id?",
     authenticate,
     isAuthorized(roles.USER),
     validation(jobValidation.getJobsSchema),

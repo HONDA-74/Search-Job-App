@@ -103,7 +103,7 @@ userSchema.pre(["save"],async function (next) {
     }
 
     if (this.isModified("isDeleted") ) {
-        
+
         const chats =await Chat.find({users : {$in : [ this._id ] }})
         if( chats.length > 0 )
             for (const chat of chats) {
@@ -112,17 +112,16 @@ userSchema.pre(["save"],async function (next) {
                 else chat.deletedAt = null
                 await chat.save() 
             }
-            
+
         const companies = await Company.find({ createdBy: this._id })
         if( companies.length > 0 )
         for (const company of companies) {
-    
             company.isDeleted = this.isDeleted
             if(this.isDeleted)  company.deletedAt = Date.now()
             else company.deletedAt = null
             await company.save() 
         }
-        
+
         const jobs = await Job.find({ addedBy : this._id })
         if( jobs.length > 0 )
         for (const job of jobs) {
