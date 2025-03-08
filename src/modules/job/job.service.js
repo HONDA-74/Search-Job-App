@@ -100,7 +100,7 @@ export const getJobs = async (req, res, next) => {
 
         if(!company) return next(new Error(messages.company.notFound , { cause : 404}))
 
-            query.companyId = company._id
+        query.companyId = company._id
     }
 
     let jobs = await Job.find(query).populate({
@@ -110,7 +110,7 @@ export const getJobs = async (req, res, next) => {
     .skip(parseInt(skip))
     .limit(parseInt(limit))
     .sort({ [sort]: -1 })
-    
+
     jobs = jobs.filter(job => job.companyId)
 
     if(jobs.length == 0) return next(new Error(messages.job.notFound , {cause : 404}))
@@ -138,6 +138,8 @@ export const getFilteredJobs = async (req, res, next) => {
     .skip(parseInt(skip))
     .limit(parseInt(limit))
     .sort({ [sort]: -1 })
+
+    jobs = jobs.filter(job => job.companyId)
 
     if(jobs.length == 0) return next(new Error(messages.job.notFound , {cause : 404}))
 
