@@ -2,7 +2,7 @@ import express from 'express'
 import bootstrap from './src/app.controller.js'
 import './src/utils/otp/deleteExpiredOtp.js'
 import { initSocket } from './src/socketIO/index.js'
-console.log(123);
+
 const app = express()
 const port = process.env.PORT || 3000
 await bootstrap(app,express)
