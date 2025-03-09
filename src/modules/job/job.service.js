@@ -130,7 +130,7 @@ export const getFilteredJobs = async (req, res, next) => {
     if (jobTitle) query.title = { $regex: jobTitle, $options: "i" }
     if (technicalSkills) query.technicalSkills = { $in: technicalSkills.split(",") }
     
-    const jobs = await Job.find(query)
+    let jobs = await Job.find(query)
     .populate({
         path: "companyId",
         match: { isBanned: false },
