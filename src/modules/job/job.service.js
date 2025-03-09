@@ -157,7 +157,7 @@ export const getJobApplications = async (req, res, next) => {
     if(company.isBanned) next(new Error("The Company is banned!" , {cause : 400}))
 
     const authorizedUsers =[company.createdBy.toString(), ...company.HRs.map(hr => hr.toString())]
-
+    
     if (!authorizedUsers.includes(req.authUser.id)) {
         return next(new Error(messages.user.notAllowed, { cause: 403 }))
     }
