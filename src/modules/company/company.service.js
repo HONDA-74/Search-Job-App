@@ -148,7 +148,7 @@ export const deleteCoverPic = async (req,res,next) => {
 export const updateCompany = async (req,res,next) => {
     const {companyName , description , industry , address , companyEmail , numberOfEmployees , HR } = req.body
 
-    const company = await Company.findOne({ createdBy : req.authUser._id , isDeleted : false })
+    const company = await Company.findOne({ _id : req.params.id , isDeleted : false })
 
     if(!company) return next(new Error(messages.company.notFound + " or " + messages.user.notAllowed , { cause : 404 }))
 
