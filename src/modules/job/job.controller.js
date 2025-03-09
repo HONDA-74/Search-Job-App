@@ -12,7 +12,7 @@ const router = Router({mergeParams : true})
 
 
 router.post(
-    "/:companyId",
+    "/",
     authenticate,
     isAuthorized(roles.USER),
     validation(jobValidation.jobSchema),
