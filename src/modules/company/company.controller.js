@@ -17,63 +17,69 @@ router.use("/:companyId?/application" , appRouter)
 router.post(
     "/" , 
     authenticate , 
+    isAuthorized( roles.USER ) , 
     cloudUpload([ ...fileValidation.IMAGES , ...fileValidation.FILES ]).single("legalAttachment") ,
     validation(companyValidation.companySchema) , 
-    isAuthorized( roles.USER ) , 
     asyncHandler(companyService.addCompany)
 )
 
 router.put(
     "/:id",
     authenticate ,
-    validation(companyValidation.updateCompanySchema) ,
     isAuthorized(roles.USER ) ,
+    validation(companyValidation.updateCompanySchema) ,
     asyncHandler(companyService.updateCompany)
 )
 
 router.get(
     "/",
     authenticate ,
-    validation(companyValidation.getCompanyByNameSchema),
     isAuthorized(roles.USER),
+    validation(companyValidation.getCompanyByNameSchema),
     asyncHandler(companyService.searchByName)
 )
 
 router.get(
     "/:id",
     authenticate ,
-    validation(companyValidation.getCompanyByIdSchema),
     isAuthorized(roles.USER) ,
+    validation(companyValidation.getCompanyByIdSchema),
     asyncHandler(companyService.getCompanyById)
 )
 
-router.delete("/logo-pic",
+router.delete("/logo-pic/:id",
     authenticate,
+    isAuthorized(roles.USER),
+    validation(companyValidation.deletePicSchema),
     asyncHandler(companyService.deleteLogoPic)
 )
 
-router.delete("/cover-pic",
+router.delete("/cover-pic/:id",
     authenticate,
+    isAuthorized(roles.USER),
+    validation(companyValidation.deletePicSchema),
     asyncHandler(companyService.deleteCoverPic) 
 )
 
 router.delete(
     "/:id",
     authenticate ,
-    validation(companyValidation.deleteSchema) ,
     isAuthorized(roles.ADMIN , roles.USER) ,
+    validation(companyValidation.deleteSchema) ,
     asyncHandler(companyService.softDelete)
 )
 
-router.post("/logo-pic",
+router.post("/logo-pic/:id",
     authenticate,
+    isAuthorized(roles.USER),
     cloudUpload(fileValidation.IMAGES ).single("image") ,
     validation(companyValidation.picSchema),
     asyncHandler(companyService.uploadLogoPic)
 )
 
-router.post("/cover-pic",
+router.post("/cover-pic/:id",
     authenticate,
+    isAuthorized(roles.USER),
     cloudUpload(fileValidation.IMAGES ).single("image") ,
     validation(companyValidation.picSchema),
     asyncHandler(companyService.uploadCoverPic) 

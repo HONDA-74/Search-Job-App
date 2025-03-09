@@ -40,5 +40,10 @@ export const getCompanyByNameSchema = joi.object({
 })
 
 export const picSchema = joi.object({
+    id : generalFields.id.required() ,
     attachment : generalFields.attachment.required()
+})
+
+export const deletePicSchema = joi.object({
+    id : generalFields.id.required() 
 })

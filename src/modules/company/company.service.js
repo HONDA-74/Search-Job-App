@@ -50,9 +50,11 @@ export const addCompany = async (req,res,next) => {
 export const uploadLogoPic = async (req,res,next) => {
     let options = {}
 
-    const company = await Company.findOne({createdBy : req.authUser._id , isDeleted : false })
+    const company = await Company.findOne({_id : req.params.id , isDeleted : false })
 
-    if(!company) return next(new Error(messages.company.notFound + " or " + messages.user.notAllowed, {cause : 403}))
+    if(!company) return next(new Error(messages.company.notFound , {cause : 403}))
+
+    if(company.createdBy.toString() != req.authUser.id) return next(new Error(messages.user.notAllowed , {cause : 403}))
 
     if(company.isBanned) return next(new Error("The Company is banned!" , {cause : 400}))
 
@@ -78,9 +80,11 @@ export const uploadLogoPic = async (req,res,next) => {
 export const uploadCoverPic = async (req,res,next) => {
     let options = {}
 
-    const company = await Company.findOne({createdBy : req.authUser._id , isDeleted : false })
+    const company = await Company.findOne({_id : req.params.id , isDeleted : false })
 
-    if(!company) return next(new Error(messages.company.notFound + " or " + messages.user.notAllowed, {cause : 403}))
+    if(!company) return next(new Error(messages.company.notFound , {cause : 403}))
+
+    if(company.createdBy.toString() != req.authUser.id) return next(new Error(messages.user.notAllowed , {cause : 403}))
 
     if(company.isBanned) return next(new Error("The Company is banned!" , {cause : 400}))
 
@@ -104,9 +108,11 @@ export const uploadCoverPic = async (req,res,next) => {
 }
 
 export const deleteLogoPic = async (req,res,next) => {
-    const company = await Company.findOne({createdBy : req.authUser._id , isDeleted : false })
+    const company = await Company.findOne({_id : req.params.id , isDeleted : false })
 
-    if(!company) return next(new Error(messages.company.notFound + " or " + messages.user.notAllowed, {cause : 403}))
+    if(!company) return next(new Error(messages.company.notFound , {cause : 403}))
+
+    if(company.createdBy.toString() != req.authUser.id) return next(new Error(messages.user.notAllowed , {cause : 403}))
 
     if(company.isBanned) return next(new Error("The Company is banned!" , {cause : 400}))
 
@@ -125,9 +131,11 @@ export const deleteLogoPic = async (req,res,next) => {
 }
 
 export const deleteCoverPic = async (req,res,next) => {
-    const company = await Company.findOne({createdBy : req.authUser._id , isBanned :false })
+    const company = await Company.findOne({_id : req.params.id , isDeleted : false })
 
-    if(!company) return next(new Error(messages.company.notFound + " or " + messages.user.notAllowed, {cause : 403}))
+    if(!company) return next(new Error(messages.company.notFound , {cause : 403}))
+
+    if(company.createdBy.toString() != req.authUser.id) return next(new Error(messages.user.notAllowed , {cause : 403}))
 
     if(company.isBanned) return next(new Error("The Company is banned!" , {cause : 400}))
 
@@ -150,7 +158,9 @@ export const updateCompany = async (req,res,next) => {
 
     const company = await Company.findOne({ _id : req.params.id , isDeleted : false })
 
-    if(!company) return next(new Error(messages.company.notFound + " or " + messages.user.notAllowed , { cause : 404 }))
+    if(!company) return next(new Error(messages.company.notFound  , { cause : 404 }))
+
+    if(company.createdBy.toString() != req.authUser.id) return next(new Error(messages.user.notAllowed , {cause : 403}))
 
     if(company.isBanned) return next(new Error("The Company is banned!" , {cause : 400}))
 
