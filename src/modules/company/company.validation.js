@@ -16,6 +16,7 @@ export const companySchema = joi.object({
 }).required()
 
 export const updateCompanySchema = joi.object({
+    id : generalFields.id.required(),
     companyName : joi.string(),
     description : joi.string(),
     industry : joi.string(),

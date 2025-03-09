@@ -24,7 +24,7 @@ router.post(
 )
 
 router.put(
-    "/",
+    "/:id",
     authenticate ,
     validation(companyValidation.updateCompanySchema) ,
     isAuthorized(roles.USER ) ,
