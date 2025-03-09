@@ -38,11 +38,12 @@ export const freeze = async (req,res,next) => {
 
 export const uploadProfilePic = async (req,res,next) => {
     let options = {}
-
-    if(req.authUser.profilePic.public_id === defaultImage.public_id ){
+    
+    if(req.authUser.profilePic.public_id == defaultImage.public_id ){
+        
         options.folder = `Search-Job-App/users/${req.authUser._id}/profile-pic`
     }else{
-        options.public_id = req.authUser.ProfilePic.public_id
+        options.public_id = req.authUser.profilePic.public_id
     }
 
     const { secure_url , public_id } = await cloudinary.uploader.upload(
