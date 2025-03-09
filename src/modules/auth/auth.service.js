@@ -35,7 +35,7 @@ export const resendOTP = async (req, res, next) => {
     }
 
     const savedOtp = await createOtp({ email , type : OTPtypes.confirmEmail })
-    await sendOtp({ otp: savedOtp.otp, email })
+    await sendOtp({ otp: savedOtp , email })
 
     return res.status(200).json({ success: true, message: messages.OTP.sent })
 }
