@@ -52,7 +52,7 @@ export const getApplications = joi.object({
     limit : joi.number(),
     skip : joi.number(),
     sort : joi.string(),
-    companyId : generalFields.id.required(),
+    companyId : generalFields.id,
     id : generalFields.id.required(),
 })
 
