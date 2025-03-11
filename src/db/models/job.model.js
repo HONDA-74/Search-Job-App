@@ -33,14 +33,15 @@ jobSchema.virtual('applications', {
 })
 
 jobSchema.pre("save", async function (next) {
-    const applications = await Application.find({ jobId : this._id })
-    
-    if( applications.length > 0 )
-    for (const application of applications) {
-        application.isDeleted = this.isDeleted
-        await application.save()
-
+    if (this.isModified("isDeleted") ){
+        const applications = await Application.find({ jobId : this._id })
+        if( applications.length > 0 )
+        for (const application of applications) {
+            application.isDeleted = this.isDeleted
+            await application.save()
+        }
     }
+
     next()
 })
 

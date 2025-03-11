@@ -51,12 +51,15 @@ companySchema.virtual('jobs', {
 })
 
 companySchema.pre("save", async function (next) {
-    const jobs = await Job.find({ companyId : this._id })
-    if( jobs.length > 0 )
-    for (const job of jobs) {
-        job.isDeleted = this.isDeleted
-        await job.save() 
+    if (this.isModified("isDeleted") ){
+        const jobs = await Job.find({ companyId : this._id })
+        if( jobs.length > 0 )
+        for (const job of jobs) {
+            job.isDeleted = this.isDeleted
+            await job.save() 
+        }
     }
+    
     next()
 })
 
